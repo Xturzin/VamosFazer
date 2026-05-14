@@ -620,7 +620,7 @@ function abrirEdicao(id) {
    var nt = elsEstaticos.inputNotas;
    if (mt) mt.textContent = 'Editar Tarefa';
    if (bc) bc.textContent = 'Salvar';
-   if (it) it.value = tarefa.titulo;
+   if (it) { it.value = tarefa.titulo; atualizarContador(); }
    if (nt) { nt.value = tarefa.notas || ''; autoResizeTextarea(nt); }
    var pbs = elsEstaticos.prioridadeBtns;
    if (pbs) pbs.forEach(function(btn) {
@@ -646,7 +646,7 @@ function fecharModal() {
    var bc = elsEstaticos.btnCriarTarefa;
    var pbs= elsEstaticos.prioridadeBtns;
    if (mo) mo.classList.remove('is-open');
-   if (it) { it.value = ''; it.classList.remove('modal__input--erro', 'modal__input--shake'); }
+   if (it) { it.value = ''; it.classList.remove('modal__input--erro', 'modal__input--shake'); atualizarContador(); }
    if (nt) { nt.value = ''; nt.style.height = ''; }
    estado.tarefaEmEdicao        = null;
    estado.prioridadeSelecionada = 'media';
