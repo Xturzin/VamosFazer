@@ -1,0 +1,20 @@
+{
+   "name": "Vamos Fazer?",
+   "short_name": "Vamos Fazer",
+   "description": "Gerenciador de tarefas editorial e minimalista",
+   "start_url": "./",
+   "display": "standalone",
+   "background_color": "#E8E0D5",
+   "theme_color": "#7339D4",
+   "orientation": "portrait-primary",
+   "lang": "pt-BR",
+   "categories": ["productivity", "utilities"],
+   "icons": [
+      {
+         "src": "icon.svg",
+         "sizes": "any",
+         "type": "image/svg+xml",
+         "purpose": "any maskable"
+      }
+   ]
+}
