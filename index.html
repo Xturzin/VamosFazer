@@ -13,7 +13,7 @@
       <link rel="apple-touch-icon" href="icon.svg" />
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,300;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
       <link rel="stylesheet" href="css/style.css" />
 
       <!-- Tema inline: previne FOUC antes do JS carregar -->
@@ -346,6 +346,57 @@
             </div>
          </div>
       </div>
+
+<!-- Modal de Perfil -->
+<div class="modal-overlay" id="modal-perfil" role="dialog" aria-modal="true" aria-labelledby="perfil-title">
+   <div class="modal modal--estreito">
+      <div class="modal__header">
+         <h2 class="modal__title" id="perfil-title">Perfil</h2>
+         <button class="modal__close" id="btn-fechar-perfil" aria-label="Fechar">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true"><path d="M1.5 1.5l8 8M9.5 1.5l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+         </button>
+      </div>
+      <div class="modal__body">
+
+         <div class="perfil-avatar-wrapper">
+            <div class="perfil-avatar" id="perfil-avatar-preview" aria-hidden="true">U</div>
+            <button class="perfil-avatar-btn" id="btn-trocar-avatar" type="button">Trocar foto</button>
+            <input type="file" id="input-avatar" accept="image/*" class="sr-only" tabindex="-1" aria-label="Selecionar foto de perfil" />
+         </div>
+
+         <div class="modal__field">
+            <label class="modal__label" for="input-perfil-nome">Nome</label>
+            <input class="modal__input" type="text" id="input-perfil-nome" placeholder="Seu nome" autocomplete="name" maxlength="60" />
+         </div>
+
+         <div class="modal__field">
+            <label class="modal__label" for="input-perfil-email">E-mail</label>
+            <input class="modal__input" type="email" id="input-perfil-email" readonly style="opacity:.5;cursor:default" />
+         </div>
+
+         <div class="modal__sep" role="separator"></div>
+
+         <div id="perfil-senha-bloco">
+            <div class="modal__field">
+               <label class="modal__label" for="input-perfil-senha">Nova senha <span class="modal__label-optional">opcional</span></label>
+               <input class="modal__input" type="password" id="input-perfil-senha" placeholder="••••••••" autocomplete="new-password" minlength="6" />
+            </div>
+            <div class="modal__field">
+               <label class="modal__label" for="input-perfil-senha2">Confirmar nova senha</label>
+               <input class="modal__input" type="password" id="input-perfil-senha2" placeholder="••••••••" autocomplete="new-password" />
+            </div>
+         </div>
+
+      </div>
+      <div class="modal__footer modal__footer--perfil">
+         <button class="btn btn--danger-ghost" id="btn-perfil-logout">Sair da conta</button>
+         <div class="modal__footer-actions">
+            <button class="btn btn--ghost" id="btn-cancelar-perfil">Cancelar</button>
+            <button class="btn btn--primary" id="btn-salvar-perfil">Salvar</button>
+         </div>
+      </div>
+   </div>
+</div>
 
       <!-- Supabase SDK (UMD — expõe window.supabase) -->
       <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>

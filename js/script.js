@@ -89,7 +89,19 @@ var elsEstaticos = {
    btnFecharNotif:      null,
    sidebarUsername:     null,
    sidebarAvatar:       null,
-   sidebarUser:         null
+   sidebarUser:         null,
+   modalPerfil:         null,
+   btnFecharPerfil:     null,
+   btnCancelarPerfil:   null,
+   btnSalvarPerfil:     null,
+   btnPerfilLogout:     null,
+   btnTrocarAvatar:     null,
+   inputAvatar:         null,
+   inputPerfilNome:     null,
+   inputPerfilEmail:    null,
+   inputPerfilSenha:    null,
+   inputPerfilSenha2:   null,
+   perfilAvatarPreview: null
 };
 
 // Referências dinâmicas (vivem dentro da view atual)
@@ -160,6 +172,18 @@ function resolverEls() {
    elsEstaticos.sidebarUsername      = qs('.sidebar__username');
    elsEstaticos.sidebarAvatar        = qs('.sidebar__avatar');
    elsEstaticos.sidebarUser          = qs('.sidebar__user');
+   elsEstaticos.modalPerfil          = el('modal-perfil');
+   elsEstaticos.btnFecharPerfil      = el('btn-fechar-perfil');
+   elsEstaticos.btnCancelarPerfil    = el('btn-cancelar-perfil');
+   elsEstaticos.btnSalvarPerfil      = el('btn-salvar-perfil');
+   elsEstaticos.btnPerfilLogout      = el('btn-perfil-logout');
+   elsEstaticos.btnTrocarAvatar      = el('btn-trocar-avatar');
+   elsEstaticos.inputAvatar          = el('input-avatar');
+   elsEstaticos.inputPerfilNome      = el('input-perfil-nome');
+   elsEstaticos.inputPerfilEmail     = el('input-perfil-email');
+   elsEstaticos.inputPerfilSenha     = el('input-perfil-senha');
+   elsEstaticos.inputPerfilSenha2    = el('input-perfil-senha2');
+   elsEstaticos.perfilAvatarPreview  = el('perfil-avatar-preview');
    // Badges — ficam na sidebar, são estáticos
    elsDin.badgeTodas      = el('badge-todas');
    elsDin.badgeHoje       = el('badge-hoje');
@@ -1572,9 +1596,44 @@ function vincularEventosEstaticos() {
 
    // Sidebar user (logout)
    var su = elsEstaticos.sidebarUser;
-   if (su) su.addEventListener('click', function() {
+   if (su) su.addEventListener('click', abrirModalPerfil);
+
+   var bfp = elsEstaticos.btnFecharPerfil;
+   if (bfp) bfp.addEventListener('click', fecharModalPerfil);
+
+   var bcp = elsEstaticos.btnCancelarPerfil;
+   if (bcp) bcp.addEventListener('click', fecharModalPerfil);
+
+   var bsp = elsEstaticos.btnSalvarPerfil;
+   if (bsp) bsp.addEventListener('click', salvarPerfil);
+
+   var bpl = elsEstaticos.btnPerfilLogout;
+   if (bpl) bpl.addEventListener('click', function() {
+      fecharModalPerfil();
       if (window.Auth) { mostrarToast('Saindo...', 'info'); window.Auth.logout(); }
    });
+
+   var mp = elsEstaticos.modalPerfil;
+   if (mp) mp.addEventListener('click', function(e) { if (e.target === mp) fecharModalPerfil(); });
+
+   var bta = elsEstaticos.btnTrocarAvatar;
+   var ia  = elsEstaticos.inputAvatar;
+   if (bta && ia) {
+      bta.addEventListener('click', function() { ia.click(); });
+      ia.addEventListener('change', function() {
+         var arquivo = ia.files[0];
+         if (!arquivo) return;
+         var reader = new FileReader();
+         reader.onload = function(e) {
+            var av = elsEstaticos.perfilAvatarPreview;
+            if (av) {
+               av.innerHTML = '<img src="' + e.target.result + '" alt="Foto de perfil" />';
+               av.dataset.novoAvatar = e.target.result;
+            }
+         };
+         reader.readAsDataURL(arquivo);
+      });
+   }
 
    // Tema, atalhos, export
    var bt = elsEstaticos.btnTema;
@@ -1735,6 +1794,109 @@ function vincularEventosEstaticos() {
 }
 
 // =============================================
+// MODAL DE PERFIL
+// =============================================
+function abrirModalPerfil() {
+   var usuario = window.authEstado ? window.authEstado.usuario : null;
+   var nome    = (usuario && usuario.user_metadata && usuario.user_metadata.nome) ||
+                 (usuario && usuario.email && usuario.email.split('@')[0]) || '';
+   var email   = (usuario && usuario.email) || '';
+
+   var inp = elsEstaticos.inputPerfilNome;
+   var iem = elsEstaticos.inputPerfilEmail;
+   var is1 = elsEstaticos.inputPerfilSenha;
+   var is2 = elsEstaticos.inputPerfilSenha2;
+   var av  = elsEstaticos.perfilAvatarPreview;
+   var mp  = elsEstaticos.modalPerfil;
+
+   if (inp) inp.value = nome;
+   if (iem) iem.value = email;
+   if (is1) is1.value = '';
+   if (is2) is2.value = '';
+
+   // Carrega avatar salvo (base64) ou usa inicial
+   var avatarKey = 'vf-avatar' + (email ? '-' + email : '');
+   var avatarSalvo = localStorage.getItem(avatarKey);
+   if (av) {
+      if (avatarSalvo) {
+         av.innerHTML = '<img src="' + avatarSalvo + '" alt="Foto de perfil" />';
+      } else {
+         av.textContent = nome ? nome.charAt(0).toUpperCase() : 'U';
+      }
+   }
+
+   // Oculta campo de senha se não há Supabase
+   var senhaBloco = el('perfil-senha-bloco');
+   if (senhaBloco) senhaBloco.style.display = window.supabaseClient ? '' : 'none';
+
+   if (mp) { mp.classList.add('is-open'); mp.setAttribute('aria-hidden', 'false'); }
+   setTimeout(function() { if (inp) inp.focus(); }, 60);
+}
+
+function fecharModalPerfil() {
+   var mp = elsEstaticos.modalPerfil;
+   if (mp) { mp.classList.remove('is-open'); mp.setAttribute('aria-hidden', 'true'); }
+}
+
+function salvarPerfil() {
+   var inp = elsEstaticos.inputPerfilNome;
+   var is1 = elsEstaticos.inputPerfilSenha;
+   var is2 = elsEstaticos.inputPerfilSenha2;
+   var nome = inp ? inp.value.trim() : '';
+   var s1   = is1 ? is1.value : '';
+   var s2   = is2 ? is2.value : '';
+
+   if (s1 && s1 !== s2) {
+      mostrarToast('As senhas não coincidem.', 'erro');
+      if (is2) is2.focus();
+      return;
+   }
+   if (s1 && s1.length < 6) {
+      mostrarToast('A senha precisa ter pelo menos 6 caracteres.', 'erro');
+      if (is1) is1.focus();
+      return;
+   }
+
+   // Salva avatar se foi trocado (armazenado no dataset temporário)
+   var av = elsEstaticos.perfilAvatarPreview;
+   if (av && av.dataset.novoAvatar) {
+      var usuario  = window.authEstado ? window.authEstado.usuario : null;
+      var avatarKey = 'vf-avatar' + (usuario && usuario.email ? '-' + usuario.email : '');
+      localStorage.setItem(avatarKey, av.dataset.novoAvatar);
+      delete av.dataset.novoAvatar;
+      // Atualiza sidebar
+      var sa = qs('.sidebar__avatar');
+      if (sa && nome) sa.textContent = nome.charAt(0).toUpperCase();
+   }
+
+   if (window.supabaseClient && window.authEstado && window.authEstado.usuario) {
+      var payload = { data: { nome: nome } };
+      if (s1) payload.password = s1;
+      window.supabaseClient.auth.updateUser(payload).then(function(result) {
+         if (result.error) { mostrarToast('Erro: ' + result.error.message, 'erro'); return; }
+         if (window.authEstado.usuario) {
+            window.authEstado.usuario.user_metadata = window.authEstado.usuario.user_metadata || {};
+            window.authEstado.usuario.user_metadata.nome = nome;
+         }
+         atualizarInfoUsuario();
+         fecharModalPerfil();
+         mostrarToast(s1 ? 'Perfil e senha atualizados.' : 'Perfil atualizado.');
+      });
+   } else {
+      // Modo local: apenas atualiza a sidebar
+      if (window.authEstado && !window.authEstado.usuario) {
+         window.authEstado.usuario = { user_metadata: { nome: nome }, email: '' };
+      } else if (window.authEstado && window.authEstado.usuario) {
+         window.authEstado.usuario.user_metadata = window.authEstado.usuario.user_metadata || {};
+         window.authEstado.usuario.user_metadata.nome = nome;
+      }
+      atualizarInfoUsuario();
+      fecharModalPerfil();
+      mostrarToast('Perfil atualizado.');
+   }
+}
+
+// =============================================
 // ATUALIZAR INFO DO USUÁRIO NA SIDEBAR
 // =============================================
 function atualizarInfoUsuario() {
@@ -1770,6 +1932,8 @@ function inicializarApp() {
 
 function finalizarInicializacao() {
    atualizarInfoUsuario();
+   var _mainInit = el('main-content');
+   if (_mainInit) _mainInit.innerHTML = htmlListaView();
    resolverElsDinamicos();
    vincularEventosDinamicos();
    sincronizarEstado();
