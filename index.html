@@ -235,7 +235,12 @@
                      <button class="vencimento-preset" data-dias="7" aria-pressed="false">Semana</button>
                   </div>
                   <div class="vencimento-input-wrapper">
-                     <input type="date" id="input-vencimento" class="modal__input modal__input--data" aria-labelledby="label-vencimento" />
+                     <input type="date" id="input-vencimento" aria-labelledby="label-vencimento" style="display:none" tabindex="-1" />
+                     <button class="vencimento-picker-btn" id="btn-vencimento-picker" type="button" aria-haspopup="true" aria-expanded="false">
+                        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><rect x="1" y="2" width="11" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M1 5h11M4 1v2M9 1v2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                        <span id="vencimento-picker-label">Escolher data</span>
+                     </button>
+                     <div class="vencimento-picker-popup" id="vencimento-picker-popup" aria-hidden="true"></div>
                      <button class="vencimento-limpar" id="btn-limpar-vencimento" aria-label="Remover prazo" tabindex="-1">
                         <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true"><path d="M1 1l7 7M8 1l-7 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
                      </button>

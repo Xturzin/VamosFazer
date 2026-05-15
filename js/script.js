@@ -104,7 +104,9 @@ var elsEstaticos = {
    perfilSenhaCampos:     null,
    inputPerfilSenha:    null,
    inputPerfilSenha2:   null,
-   perfilAvatarPreview: null
+   perfilAvatarPreview: null,
+   btnVencimentoPicker: null,
+   pickerPopup:         null
 };
 
 // Referências dinâmicas (vivem dentro da view atual)
@@ -190,6 +192,8 @@ function resolverEls() {
    elsEstaticos.inputPerfilSenha     = el('input-perfil-senha');
    elsEstaticos.inputPerfilSenha2    = el('input-perfil-senha2');
    elsEstaticos.perfilAvatarPreview  = el('perfil-avatar-preview');
+   elsEstaticos.btnVencimentoPicker  = el('btn-vencimento-picker');
+   elsEstaticos.pickerPopup          = el('vencimento-picker-popup');
    // Badges — ficam na sidebar, são estáticos
    elsDin.badgeTodas      = el('badge-todas');
    elsDin.badgeHoje       = el('badge-hoje');
@@ -612,10 +616,19 @@ function sincronizarEstado(cfg) {
 // =============================================
 function atualizarVencimentoModal(dataISO) {
    estado.vencimentoSelecionado = dataISO || null;
-   var iv = elsEstaticos.inputVencimento;
-   var bl = elsEstaticos.btnLimparVencimento;
-   var ps = elsEstaticos.vencimentoPresets;
+   var iv  = elsEstaticos.inputVencimento;
+   var bl  = elsEstaticos.btnLimparVencimento;
+   var ps  = elsEstaticos.vencimentoPresets;
+   var lbl = el('vencimento-picker-label');
    if (iv) iv.value = dataISO || '';
+   if (lbl) {
+      if (dataISO) {
+         var parts = dataISO.split('-');
+         lbl.textContent = parts[2] + '/' + parts[1] + '/' + parts[0];
+      } else {
+         lbl.textContent = 'Escolher data';
+      }
+   }
    var tem = !!dataISO;
    if (bl) { bl.classList.toggle('visivel', tem); bl.setAttribute('tabindex', tem ? '0' : '-1'); }
    if (ps) ps.forEach(function(btn) {
@@ -687,6 +700,7 @@ function fecharModal() {
       btn.classList.toggle('prioridade-btn--ativo', isMedia);
       btn.setAttribute('aria-pressed', isMedia ? 'true' : 'false');
    });
+   fecharPicker();
    atualizarVencimentoModal(null);
    if (elementoAntesDoModal) { elementoAntesDoModal.focus(); elementoAntesDoModal = null; }
    if (estado.viewAtual === 'calendario') { renderizarCalendario(); }
@@ -1177,8 +1191,10 @@ function toggleSearchClear() {
 var MESES_PT    = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 var DIAS_SEM_PT = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 
-var calMes = new Date().getMonth();
-var calAno = new Date().getFullYear();
+var calMes    = new Date().getMonth();
+var calAno    = new Date().getFullYear();
+var pickerMes = new Date().getMonth();
+var pickerAno = new Date().getFullYear();
 
 function renderizarCalendario() {
    var main = el('main-content');
@@ -1287,6 +1303,87 @@ function renderizarCalendario() {
          if (!data) return;
          abrirModal();
          atualizarVencimentoModal(data);
+      });
+   });
+}
+
+// =============================================
+// DATE PICKER CUSTOMIZADO
+// =============================================
+var MESES_PICKER = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+var DIAS_PICKER  = ['D','S','T','Q','Q','S','S'];
+
+function abrirPicker() {
+   var pp  = elsEstaticos.pickerPopup;
+   var btn = elsEstaticos.btnVencimentoPicker;
+   if (!pp) return;
+   var d = new Date();
+   if (estado.vencimentoSelecionado) {
+      var parts = estado.vencimentoSelecionado.split('-');
+      pickerAno = Number(parts[0]);
+      pickerMes = Number(parts[1]) - 1;
+   } else {
+      pickerMes = d.getMonth();
+      pickerAno = d.getFullYear();
+   }
+   renderizarPicker();
+   pp.classList.add('vencimento-picker-popup--aberto');
+   pp.setAttribute('aria-hidden', 'false');
+   if (btn) btn.setAttribute('aria-expanded', 'true');
+}
+
+function fecharPicker() {
+   var pp  = elsEstaticos.pickerPopup;
+   var btn = elsEstaticos.btnVencimentoPicker;
+   if (!pp) return;
+   pp.classList.remove('vencimento-picker-popup--aberto');
+   pp.setAttribute('aria-hidden', 'true');
+   if (btn) btn.setAttribute('aria-expanded', 'false');
+}
+
+function renderizarPicker() {
+   var pp   = elsEstaticos.pickerPopup;
+   if (!pp) return;
+   var hoje      = new Date().toISOString().slice(0, 10);
+   var selecionado = estado.vencimentoSelecionado;
+   var diasNoMes   = new Date(pickerAno, pickerMes + 1, 0).getDate();
+   var primeiroDia = new Date(pickerAno, pickerMes, 1).getDay();
+
+   var cab = DIAS_PICKER.map(function(d) {
+      return '<span class="pk-sem">' + d + '</span>';
+   }).join('');
+
+   var celulas = '';
+   for (var i = 0; i < primeiroDia; i++) {
+      celulas += '<span class="pk-dia pk-dia--vazia"></span>';
+   }
+   for (var d = 1; d <= diasNoMes; d++) {
+      var dStr = pickerAno + '-' + String(pickerMes + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+      var cls  = 'pk-dia';
+      if (dStr === hoje)       cls += ' pk-dia--hoje';
+      if (dStr === selecionado) cls += ' pk-dia--selecionado';
+      if (dStr < hoje)         cls += ' pk-dia--passado';
+      celulas += '<button type="button" class="' + cls + '" data-pk-data="' + dStr + '">' + d + '</button>';
+   }
+
+   pp.innerHTML =
+      '<div class="pk-nav">' +
+         '<button type="button" class="pk-nav__btn" id="pk-ant"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L4 6l4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+         '<span class="pk-nav__titulo">' + MESES_PICKER[pickerMes] + ' ' + pickerAno + '</span>' +
+         '<button type="button" class="pk-nav__btn" id="pk-pro"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4 2l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+      '</div>' +
+      '<div class="pk-grade">' + cab + celulas + '</div>';
+
+   var ant = pp.querySelector('#pk-ant');
+   var pro = pp.querySelector('#pk-pro');
+   if (ant) ant.addEventListener('click', function(e) { e.stopPropagation(); pickerMes--; if (pickerMes < 0) { pickerMes = 11; pickerAno--; } renderizarPicker(); });
+   if (pro) pro.addEventListener('click', function(e) { e.stopPropagation(); pickerMes++; if (pickerMes > 11) { pickerMes = 0; pickerAno++; } renderizarPicker(); });
+
+   pp.querySelectorAll('.pk-dia[data-pk-data]').forEach(function(cel) {
+      cel.addEventListener('click', function(e) {
+         e.stopPropagation();
+         atualizarVencimentoModal(cel.dataset.pkData);
+         fecharPicker();
       });
    });
 }
@@ -1552,7 +1649,22 @@ function vincularEventosEstaticos() {
    }
 
    if (iv) iv.addEventListener('input', function() { atualizarVencimentoModal(iv.value || null); });
-   if (blv) blv.addEventListener('click', function() { atualizarVencimentoModal(null); });
+   if (blv) blv.addEventListener('click', function(e) { e.stopPropagation(); atualizarVencimentoModal(null); fecharPicker(); });
+
+   var bvp = elsEstaticos.btnVencimentoPicker;
+   if (bvp) bvp.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var pp = elsEstaticos.pickerPopup;
+      if (pp && pp.classList.contains('vencimento-picker-popup--aberto')) { fecharPicker(); } else { abrirPicker(); }
+   });
+
+   document.addEventListener('click', function(e) {
+      var pp  = elsEstaticos.pickerPopup;
+      var bvp2 = elsEstaticos.btnVencimentoPicker;
+      if (pp && pp.classList.contains('vencimento-picker-popup--aberto') && !pp.contains(e.target) && e.target !== bvp2) {
+         fecharPicker();
+      }
+   });
 
    var vps = elsEstaticos.vencimentoPresets;
    if (vps) vps.forEach(function(btn) {
