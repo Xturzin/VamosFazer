@@ -689,6 +689,7 @@ function fecharModal() {
    });
    atualizarVencimentoModal(null);
    if (elementoAntesDoModal) { elementoAntesDoModal.focus(); elementoAntesDoModal = null; }
+   if (estado.viewAtual === 'calendario') { renderizarCalendario(); }
 }
 
 // =============================================
@@ -1284,9 +1285,8 @@ function renderizarCalendario() {
          if (e.target.closest('.calendario-celula__ponto')) return;
          var data = cel.dataset.calData;
          if (!data) return;
-         trocarParaLista(function() {
-            setTimeout(function() { abrirModal(); atualizarVencimentoModal(data); }, 150);
-         });
+         abrirModal();
+         atualizarVencimentoModal(data);
       });
    });
 }
