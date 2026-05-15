@@ -1622,6 +1622,23 @@ function vincularEventosEstaticos() {
    var mp = elsEstaticos.modalPerfil;
    if (mp) mp.addEventListener('click', function(e) { if (e.target === mp) fecharModalPerfil(); });
 
+   var bts = elsEstaticos.btnToggleSenha;
+   var psc = elsEstaticos.perfilSenhaCampos;
+   if (bts && psc) {
+      bts.addEventListener('click', function() {
+         var aberto = psc.classList.toggle('perfil-senha-campos--aberto');
+         bts.setAttribute('aria-expanded', String(aberto));
+         psc.setAttribute('aria-hidden', String(!aberto));
+         psc.querySelectorAll('input').forEach(function(inp) {
+            inp.setAttribute('tabindex', aberto ? '0' : '-1');
+         });
+         if (aberto) {
+            var primeiro = psc.querySelector('input');
+            if (primeiro) setTimeout(function() { primeiro.focus(); }, 260);
+         }
+      });
+   }
+
    var bta = elsEstaticos.btnTrocarAvatar;
    var ia  = elsEstaticos.inputAvatar;
    if (bta && ia) {
