@@ -656,7 +656,7 @@ kbd { display:inline-block; padding:1px 5px; font-size:9.5px; font-family:var(--
 .calendario-nav__centro { display:flex; flex-direction:column; align-items:center; gap:2px; }
 .calendario-nav__mes-nome { font-family:var(--font-display); font-size:26px; font-weight:700; color:var(--color-text); letter-spacing:-.02em; line-height:1; }
 .calendario-nav__ano-num { font-size:11px; font-weight:400; color:var(--color-text-subtle); letter-spacing:.04em; }
-.calendario-nav__acoes { display:flex; align-items:center; gap:6px; }
+.calendario-nav__lado { display:flex; align-items:center; gap:6px; }
 .calendario-nav__hoje { font-size:11px; font-weight:500; color:var(--color-accent); letter-spacing:.04em; text-transform:uppercase; padding:4px 10px; border-radius:100px; border:1px solid var(--color-accent); background:transparent; cursor:pointer; font-family:var(--font-body); transition:background .15s; }
 .calendario-nav__hoje:hover { background-color:var(--color-accent-subtle); }
 .calendario-grade { flex:1; display:flex; flex-direction:column; gap:4px; }
