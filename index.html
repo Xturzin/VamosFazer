@@ -386,15 +386,27 @@
                <div>
                   <div class="modal__field">
                      <label class="modal__label" for="input-perfil-senha-atual">Senha atual</label>
-                     <input class="modal__input" type="password" id="input-perfil-senha-atual" placeholder="••••••••" autocomplete="current-password" tabindex="-1" />
-                  </div>
-                  <div class="modal__field">
-                     <label class="modal__label" for="input-perfil-senha">Nova senha</label>
-                     <input class="modal__input" type="password" id="input-perfil-senha" placeholder="••••••••" autocomplete="new-password" tabindex="-1" />
-                  </div>
-                  <div class="modal__field">
-                     <label class="modal__label" for="input-perfil-senha2">Confirmar nova senha</label>
-                     <input class="modal__input" type="password" id="input-perfil-senha2" placeholder="••••••••" autocomplete="new-password" tabindex="-1" />
+                     <input class="modal__input modal__input--senha" type="password" id="input-perfil-senha-atual" placeholder="••••••••" autocomplete="current-password" tabindex="-1" />
+                  <button type="button" class="input-senha-olho" data-alvo="input-perfil-senha-atual" tabindex="-1" aria-label="Mostrar senha">
+                     <svg class="olho-aberto" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7s2.5-4 6-4 6 4 6 4-2.5 4-6 4-6-4-6-4z" stroke="currentColor" stroke-width="1.3"/><circle cx="7" cy="7" r="1.8" stroke="currentColor" stroke-width="1.3"/></svg>
+                     <svg class="olho-fechado" width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:none"><path d="M1 1l12 12M5.5 5.6A2 2 0 009.4 9M3 3.3C1.8 4.4 1 7 1 7s2.5 4 6 4c1.1 0 2.1-.3 3-1M6 3.1C6.3 3 6.7 3 7 3c3.5 0 6 4 6 4s-.5 1-1.5 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                  </button>
+               </div>
+               <div class="modal__field">
+                  <label class="modal__label" for="input-perfil-senha">Nova senha</label>
+                  <input class="modal__input modal__input--senha" type="password" id="input-perfil-senha" placeholder="••••••••" autocomplete="new-password" tabindex="-1" />
+                  <button type="button" class="input-senha-olho" data-alvo="input-perfil-senha" tabindex="-1" aria-label="Mostrar senha">
+                     <svg class="olho-aberto" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7s2.5-4 6-4 6 4 6 4-2.5 4-6 4-6-4-6-4z" stroke="currentColor" stroke-width="1.3"/><circle cx="7" cy="7" r="1.8" stroke="currentColor" stroke-width="1.3"/></svg>
+                     <svg class="olho-fechado" width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:none"><path d="M1 1l12 12M5.5 5.6A2 2 0 009.4 9M3 3.3C1.8 4.4 1 7 1 7s2.5 4 6 4c1.1 0 2.1-.3 3-1M6 3.1C6.3 3 6.7 3 7 3c3.5 0 6 4 6 4s-.5 1-1.5 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                  </button>
+               </div>
+               <div class="modal__field">
+                  <label class="modal__label" for="input-perfil-senha2">Confirmar nova senha</label>
+                  <input class="modal__input modal__input--senha" type="password" id="input-perfil-senha2" placeholder="••••••••" autocomplete="new-password" tabindex="-1" />
+                  <button type="button" class="input-senha-olho" data-alvo="input-perfil-senha2" tabindex="-1" aria-label="Mostrar senha">
+                     <svg class="olho-aberto" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7s2.5-4 6-4 6 4 6 4-2.5 4-6 4-6-4-6-4z" stroke="currentColor" stroke-width="1.3"/><circle cx="7" cy="7" r="1.8" stroke="currentColor" stroke-width="1.3"/></svg>
+                     <svg class="olho-fechado" width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:none"><path d="M1 1l12 12M5.5 5.6A2 2 0 009.4 9M3 3.3C1.8 4.4 1 7 1 7s2.5 4 6 4c1.1 0 2.1-.3 3-1M6 3.1C6.3 3 6.7 3 7 3c3.5 0 6 4 6 4s-.5 1-1.5 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                  </button>
                   </div>
                </div>
             </div>
