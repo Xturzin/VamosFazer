@@ -65,6 +65,7 @@ self.addEventListener('fetch', function(ev) {
    if (ev.request.method !== 'GET') return;
 
    var url = ev.request.url;
+   if (!url.startsWith('http://') && !url.startsWith('https://')) return;
 
    // Supabase e externos: sempre pela rede, sem cache
    if (devePassarPelaRede(url)) {
