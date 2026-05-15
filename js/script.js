@@ -1622,6 +1622,19 @@ function vincularEventosEstaticos() {
    var mp = elsEstaticos.modalPerfil;
    if (mp) mp.addEventListener('click', function(e) { if (e.target === mp) fecharModalPerfil(); });
 
+   var mp2 = elsEstaticos.modalPerfil;
+   if (mp2) mp2.addEventListener('click', function(e) {
+      var btn = e.target.closest('.input-senha-olho');
+      if (!btn) return;
+      var inp = document.getElementById(btn.dataset.alvo);
+      if (!inp) return;
+      var visivel = inp.type === 'text';
+      inp.type = visivel ? 'password' : 'text';
+      btn.setAttribute('aria-label', visivel ? 'Mostrar senha' : 'Ocultar senha');
+      btn.querySelector('.olho-aberto').style.display  = visivel ? '' : 'none';
+      btn.querySelector('.olho-fechado').style.display = visivel ? 'none' : '';
+   });
+
    var bts = elsEstaticos.btnToggleSenha;
    var psc = elsEstaticos.perfilSenhaCampos;
    if (bts && psc) {
