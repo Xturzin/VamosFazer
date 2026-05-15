@@ -1398,7 +1398,8 @@ function vincularEventosDinamicos() {
    var mt = el('menu-toggle');
    if (mt) {
       elsEstaticos.menuToggle = mt;
-      mt.addEventListener('click', function() {
+      mt.addEventListener('click', function(e) {
+         e.stopPropagation();
          var sb   = elsEstaticos.sidebar;
          if (!sb) return;
          var open = sb.classList.toggle('is-open');
