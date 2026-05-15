@@ -1183,61 +1183,65 @@ function renderizarCalendario() {
    var main = el('main-content');
    if (!main) return;
 
-   var hoje    = new Date().toISOString().slice(0, 10);
-   var offsets = [-1, 0, 1, 2];
-   var meses   = offsets.map(function(off) {
-      var m = calMes + off, a = calAno;
-      while (m < 0)  { m += 12; a--; }
-      while (m > 11) { m -= 12; a++; }
-      return { mes: m, ano: a };
-   });
+   var hoje       = new Date().toISOString().slice(0, 10);
+   var diasNoMes  = new Date(calAno, calMes + 1, 0).getDate();
+   var primeiroDia = new Date(calAno, calMes, 1).getDay();
 
-   var navHtml = '' +
+   var navHtml =
       '<div class="calendario-nav" aria-label="Navegação do calendário">' +
-         '<button class="calendario-nav__btn" id="cal-anterior" aria-label="Meses anteriores">' +
+         '<button class="calendario-nav__btn" id="cal-anterior" aria-label="Mês anterior">' +
             '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
          '</button>' +
-         '<button class="calendario-nav__hoje" id="cal-hoje">Hoje</button>' +
-         '<button class="calendario-nav__btn" id="cal-proximo" aria-label="Próximos meses">' +
-            '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-         '</button>' +
+         '<div class="calendario-nav__centro">' +
+            '<span class="calendario-nav__mes-nome">' + MESES_PT[calMes] + '</span>' +
+            '<span class="calendario-nav__ano-num">' + calAno + '</span>' +
+         '</div>' +
+         '<div class="calendario-nav__acoes">' +
+            '<button class="calendario-nav__hoje" id="cal-hoje">Hoje</button>' +
+            '<button class="calendario-nav__btn" id="cal-proximo" aria-label="Próximo mês">' +
+               '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+            '</button>' +
+         '</div>' +
       '</div>';
 
-   var mesesHtml = meses.map(function(m) {
-      var diasNoMes = new Date(m.ano, m.mes + 1, 0).getDate();
-      var diasHtml  = '';
-      for (var d = 1; d <= diasNoMes; d++) {
-         var dStr   = m.ano + '-' + String(m.mes + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
-         var diaSem = new Date(dStr + 'T00:00:00').getDay();
-         var ehHoje = dStr === hoje;
-         var ehFds  = diaSem === 0 || diaSem === 6;
-         var tDia   = estado.tarefas.filter(function(t) { return t.vencimento === dStr; });
-         var MAX    = 5;
-         var pontos = tDia.slice(0, MAX).map(function(t) {
-            return '<span class="calendario-tarefa-ponto calendario-tarefa-ponto--' + t.prioridade + (t.concluida ? ' calendario-tarefa-ponto--feita' : '') + '" data-cal-id="' + t.id + '" role="button" tabindex="0" aria-label="' + escaparHtml(t.titulo) + '" title="' + escaparHtml(t.titulo) + '"></span>';
-         }).join('');
-         var mais = tDia.length > MAX ? '<span class="calendario-mais">+' + (tDia.length - MAX) + '</span>' : '';
-         var ttip = tDia.length > 0 ? tDia.map(function(t) { return (t.concluida ? '✓ ' : '• ') + t.titulo; }).join('\n') : '';
-         diasHtml += '' +
-            '<div class="calendario-dia' + (ehHoje ? ' calendario-dia--hoje' : '') + (ehFds ? ' calendario-dia--fds' : '') + '" data-cal-data="' + dStr + '" aria-label="' + d + ' de ' + MESES_PT[m.mes] + '">' +
-               '<span class="calendario-dia__numero" aria-hidden="true">' + d + '</span>' +
-               '<span class="calendario-dia__semana" aria-hidden="true">' + DIAS_SEM_PT[diaSem] + '</span>' +
-               '<div class="calendario-dia__linha" aria-hidden="true"></div>' +
-               '<div class="calendario-dia__marcacoes">' + pontos + mais + '</div>' +
-               (ttip ? '<div class="calendario-dia__tooltip" aria-hidden="true">' + escaparHtml(ttip) + '</div>' : '') +
-            '</div>';
-      }
-      return '<div class="calendario-mes" id="cal-mes-' + m.ano + '-' + m.mes + '">' +
-         '<h2 class="calendario-mes__nome">' + MESES_PT[m.mes] + '<span class="calendario-mes__ano">' + m.ano + '</span></h2>' +
-         '<div class="calendario-dias" role="list">' + diasHtml + '</div>' +
-      '</div>';
+   var cabecalho = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'].map(function(d) {
+      return '<span class="calendario-grade__dia-sem">' + d + '</span>';
    }).join('');
 
-   main.innerHTML = '<div class="calendario-wrapper">' + navHtml + mesesHtml + '</div>';
+   var celulas = '';
+   for (var i = 0; i < primeiroDia; i++) {
+      celulas += '<div class="calendario-celula calendario-celula--vazia"></div>';
+   }
+   for (var d = 1; d <= diasNoMes; d++) {
+      var dStr   = calAno + '-' + String(calMes + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+      var diaSem = new Date(dStr + 'T00:00:00').getDay();
+      var ehHoje = dStr === hoje;
+      var ehFds  = diaSem === 0 || diaSem === 6;
+      var tDia   = estado.tarefas.filter(function(t) { return t.vencimento === dStr; });
+      var MAX    = 3;
+      var pontos = tDia.slice(0, MAX).map(function(t) {
+         return '<span class="calendario-celula__ponto calendario-celula__ponto--' + t.prioridade + (t.concluida ? ' calendario-celula__ponto--feita' : '') + '" data-cal-id="' + t.id + '" role="button" tabindex="0" aria-label="' + escaparHtml(t.titulo) + '" title="' + escaparHtml(t.titulo) + '"></span>';
+      }).join('');
+      var mais = tDia.length > MAX ? '<span class="calendario-celula__mais">+' + (tDia.length - MAX) + '</span>' : '';
+      celulas +=
+         '<div class="calendario-celula' +
+            (ehHoje ? ' calendario-celula--hoje' : '') +
+            (ehFds  ? ' calendario-celula--fds'  : '') +
+            '" data-cal-data="' + dStr + '" aria-label="' + d + ' de ' + MESES_PT[calMes] + '">' +
+            '<span class="calendario-celula__num">' + d + '</span>' +
+            '<div class="calendario-celula__tarefas">' + pontos + mais + '</div>' +
+            '<div class="calendario-celula__add" aria-hidden="true">+</div>' +
+         '</div>';
+   }
 
-   // Scroll para o mês atual
-   var mesAtual = el('cal-mes-' + calAno + '-' + calMes);
-   if (mesAtual) mesAtual.scrollIntoView({ behavior: 'smooth', block: 'start' });
+   main.innerHTML =
+      '<div class="calendario-wrapper">' +
+         navHtml +
+         '<div class="calendario-grade">' +
+            '<div class="calendario-grade__cabecalho">' + cabecalho + '</div>' +
+            '<div class="calendario-grade__dias">' + celulas + '</div>' +
+         '</div>' +
+      '</div>';
 
    // Navegação
    var btnAnt  = el('cal-anterior');
@@ -1255,8 +1259,9 @@ function renderizarCalendario() {
    });
 
    // Clique em ponto: abre edição
-   main.querySelectorAll('.calendario-tarefa-ponto[data-cal-id]').forEach(function(ponto) {
-      ponto.addEventListener('click', function() {
+   main.querySelectorAll('.calendario-celula__ponto[data-cal-id]').forEach(function(ponto) {
+      ponto.addEventListener('click', function(e) {
+         e.stopPropagation();
          var id = Number(ponto.dataset.calId);
          trocarParaLista(function() { setTimeout(function() { abrirEdicao(id); }, 150); });
       });
@@ -1265,12 +1270,11 @@ function renderizarCalendario() {
       });
    });
 
-   // Clique em linha vazia: cria tarefa para aquela data
-   main.querySelectorAll('.calendario-dia__linha').forEach(function(linha) {
-      linha.addEventListener('click', function(e) {
-         if (e.target !== linha) return;
-         var dia  = linha.closest('.calendario-dia');
-         var data = dia ? dia.dataset.calData : null;
+   // Clique na célula: cria tarefa para aquela data
+   main.querySelectorAll('.calendario-celula:not(.calendario-celula--vazia)').forEach(function(cel) {
+      cel.addEventListener('click', function(e) {
+         if (e.target.closest('.calendario-celula__ponto')) return;
+         var data = cel.dataset.calData;
          if (!data) return;
          trocarParaLista(function() {
             setTimeout(function() { abrirModal(); atualizarVencimentoModal(data); }, 150);

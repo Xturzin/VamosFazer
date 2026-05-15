@@ -647,38 +647,46 @@ kbd { display:inline-block; padding:1px 5px; font-size:9.5px; font-family:var(--
 .auth-footer { font-family:var(--font-display); font-style:italic; font-size:15px; color:var(--color-text-subtle); text-align:center; }
 
 /* =============================================
-   CALENDÁRIO EDITORIAL
+   CALENDÁRIO GRID
    ============================================= */
-.calendario-wrapper { flex:1; overflow-y:auto; padding-bottom:var(--space-xl); }
+.calendario-wrapper { flex:1; overflow-y:auto; padding-bottom:var(--space-xl); display:flex; flex-direction:column; }
 .calendario-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--space-lg); padding-bottom:var(--space-md); border-bottom:1px solid var(--color-border-subtle); }
-.calendario-nav__btn { display:flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:var(--radius-sm); color:var(--color-text-muted); transition:background .15s, color .15s; }
+.calendario-nav__btn { display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:var(--radius-sm); color:var(--color-text-muted); transition:background .15s, color .15s; }
 .calendario-nav__btn:hover { background-color:var(--color-border); color:var(--color-text); }
-.calendario-nav__hoje { font-size:11px; font-weight:500; color:var(--color-accent); letter-spacing:.04em; text-transform:uppercase; padding:4px 10px; border-radius:100px; border:1px solid var(--color-accent); background:transparent; transition:background .15s; }
+.calendario-nav__centro { display:flex; flex-direction:column; align-items:center; gap:2px; }
+.calendario-nav__mes-nome { font-family:var(--font-display); font-size:26px; font-weight:700; color:var(--color-text); letter-spacing:-.02em; line-height:1; }
+.calendario-nav__ano-num { font-size:11px; font-weight:400; color:var(--color-text-subtle); letter-spacing:.04em; }
+.calendario-nav__acoes { display:flex; align-items:center; gap:6px; }
+.calendario-nav__hoje { font-size:11px; font-weight:500; color:var(--color-accent); letter-spacing:.04em; text-transform:uppercase; padding:4px 10px; border-radius:100px; border:1px solid var(--color-accent); background:transparent; cursor:pointer; font-family:var(--font-body); transition:background .15s; }
 .calendario-nav__hoje:hover { background-color:var(--color-accent-subtle); }
-.calendario-mes { margin-bottom:var(--space-xl); }
-.calendario-mes__nome { font-family:var(--font-display); font-size:52px; font-weight:700; color:var(--color-text); letter-spacing:-.04em; line-height:1; margin-bottom:var(--space-lg); padding-bottom:var(--space-sm); border-bottom:1px solid var(--color-border-subtle); }
-.calendario-mes__ano { font-size:16px; font-weight:300; color:var(--color-text-subtle); letter-spacing:.02em; vertical-align:super; margin-left:6px; font-style:italic; }
-.calendario-dias { display:flex; flex-direction:column; }
-.calendario-dia { display:flex; align-items:center; min-height:36px; gap:0; position:relative; transition:background .12s; }
-.calendario-dia:hover { background-color:var(--color-surface); }
-.calendario-dia__numero { font-variant-numeric:tabular-nums; font-size:11px; font-weight:400; color:var(--color-text-subtle); width:24px; text-align:right; flex-shrink:0; user-select:none; }
-.calendario-dia__semana { font-size:9px; font-weight:400; color:var(--color-border); text-transform:uppercase; letter-spacing:.1em; width:24px; text-align:center; flex-shrink:0; user-select:none; }
-.calendario-dia__linha { flex:1; height:1px; background-color:var(--color-border-subtle); margin:0 var(--space-md); position:relative; cursor:pointer; transition:background .15s; }
-.calendario-dia__linha:hover { background-color:var(--color-accent); opacity:.35; }
-.calendario-dia--hoje .calendario-dia__numero { color:var(--color-accent); font-weight:600; }
-.calendario-dia--hoje .calendario-dia__linha { background-color:var(--color-accent); opacity:.3; }
-.calendario-dia--hoje .calendario-dia__semana { color:var(--color-accent); }
-.calendario-dia--fds .calendario-dia__numero { color:var(--color-border); }
-.calendario-dia__marcacoes { display:flex; align-items:center; gap:3px; flex-shrink:0; padding-right:8px; }
-.calendario-tarefa-ponto { width:6px; height:6px; border-radius:50%; flex-shrink:0; cursor:pointer; transition:transform .15s; }
-.calendario-tarefa-ponto:hover { transform:scale(1.5); }
-.calendario-tarefa-ponto--alta  { background-color:var(--priority-alta-color); }
-.calendario-tarefa-ponto--media { background-color:var(--priority-media-color); }
-.calendario-tarefa-ponto--baixa { background-color:var(--priority-baixa-color); }
-.calendario-tarefa-ponto--feita { opacity:.3; }
-.calendario-mais { font-size:9px; font-weight:500; color:var(--color-text-subtle); letter-spacing:.02em; }
-.calendario-dia__tooltip { position:absolute; left:56px; top:50%; transform:translateY(-50%); background-color:var(--color-text); color:var(--color-bg); font-size:11px; font-weight:300; line-height:1.5; padding:6px 10px; border-radius:var(--radius-sm); white-space:pre-line; max-width:220px; pointer-events:none; opacity:0; transition:opacity .15s; z-index:10; box-shadow:0 4px 16px rgba(0,0,0,.15); overflow:hidden; text-overflow:ellipsis; }
-.calendario-dia:hover .calendario-dia__tooltip:not(:empty) { opacity:1; }
+.calendario-grade { flex:1; display:flex; flex-direction:column; gap:4px; }
+.calendario-grade__cabecalho { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-bottom:4px; }
+.calendario-grade__dia-sem { font-size:10px; font-weight:600; color:var(--color-text-subtle); text-transform:uppercase; letter-spacing:.1em; text-align:center; padding:6px 0; }
+.calendario-grade__dias { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
+.calendario-celula { min-height:80px; background-color:var(--color-surface); border:1px solid var(--color-border-subtle); border-radius:var(--radius-md); padding:8px; display:flex; flex-direction:column; gap:4px; cursor:pointer; position:relative; transition:background .15s, border-color .15s, box-shadow .15s; }
+.calendario-celula:hover { background-color:var(--color-surface-hover); border-color:var(--color-border); box-shadow:var(--shadow-card); }
+.calendario-celula:hover .calendario-celula__add { opacity:1; }
+.calendario-celula--vazia { background:transparent; border-color:transparent; cursor:default; pointer-events:none; }
+.calendario-celula--fds { background-color:var(--color-bg); }
+.calendario-celula--fds:hover { background-color:var(--color-surface); }
+.calendario-celula--hoje { border-color:var(--color-accent); background-color:var(--color-accent-subtle); }
+.calendario-celula--hoje:hover { background-color:rgba(115,57,212,.12); }
+.calendario-celula__num { font-size:12px; font-weight:500; color:var(--color-text-muted); font-variant-numeric:tabular-nums; line-height:1; }
+.calendario-celula--hoje .calendario-celula__num { color:var(--color-accent); font-weight:700; }
+.calendario-celula--fds .calendario-celula__num { color:var(--color-text-subtle); }
+.calendario-celula__tarefas { display:flex; flex-wrap:wrap; gap:3px; flex:1; align-content:flex-start; }
+.calendario-celula__ponto { width:7px; height:7px; border-radius:50%; flex-shrink:0; cursor:pointer; transition:transform .15s, opacity .15s; }
+.calendario-celula__ponto:hover { transform:scale(1.4); }
+.calendario-celula__ponto--alta  { background-color:var(--priority-alta-color); }
+.calendario-celula__ponto--media { background-color:var(--priority-media-color); }
+.calendario-celula__ponto--baixa { background-color:var(--priority-baixa-color); }
+.calendario-celula__ponto--feita { opacity:.3; }
+.calendario-celula__mais { font-size:9px; font-weight:500; color:var(--color-text-subtle); align-self:flex-end; }
+.calendario-celula__add { position:absolute; bottom:6px; right:8px; font-size:14px; font-weight:300; color:var(--color-accent); opacity:0; transition:opacity .15s; line-height:1; pointer-events:none; }
+@media (max-width:640px) {
+   .calendario-celula { min-height:54px; padding:6px; }
+   .calendario-grade__dia-sem { font-size:9px; }
+}
 
 /* =============================================
    MENU TOGGLE (mobile)
