@@ -1874,17 +1874,6 @@ function salvarPerfil() {
       if (s1 !== s2) { mostrarToast('As senhas não coincidem.', 'erro'); if (is2) is2.focus(); return; }
    }
 
-   if (false && s1 && s1 !== s2) { 
-      mostrarToast('As senhas não coincidem.', 'erro');
-      if (is2) is2.focus();
-      return;
-   }
-   if (s1 && s1.length < 6) {
-      mostrarToast('A senha precisa ter pelo menos 6 caracteres.', 'erro');
-      if (is1) is1.focus();
-      return;
-   }
-
    // Salva avatar se foi trocado (armazenado no dataset temporário)
    var av = elsEstaticos.perfilAvatarPreview;
    if (av && av.dataset.novoAvatar) {
