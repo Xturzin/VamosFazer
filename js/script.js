@@ -1346,7 +1346,7 @@ function htmlListaView() {
       '</div>' +
       '<div class="search-wrapper" id="search-wrapper">' +
          '<span class="search-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.4"/><path d="M9.5 9.5L12.5 12.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>' +
-         '<input type="search" class="search-input" id="search-input" placeholder="Buscar tarefas..." autocomplete="off" aria-label="Buscar tarefas" />' +
+         '<input type="search" class="search-input" id="search-input" placeholder="Buscar tarefas..." autocomplete="nope" aria-label="Buscar tarefas" />' +
          '<button class="search-clear" id="search-clear" aria-label="Limpar busca" tabindex="-1"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M1.5 1.5l7 7M8.5 1.5l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>' +
       '</div>' +
       '<div class="progresso-wrapper">' +
