@@ -376,14 +376,25 @@
 
          <div class="modal__sep" role="separator"></div>
 
-         <div id="perfil-senha-bloco">
-            <div class="modal__field">
-               <label class="modal__label" for="input-perfil-senha">Nova senha <span class="modal__label-optional">opcional</span></label>
-               <input class="modal__input" type="password" id="input-perfil-senha" placeholder="••••••••" autocomplete="new-password" minlength="6" />
-            </div>
-            <div class="modal__field">
-               <label class="modal__label" for="input-perfil-senha2">Confirmar nova senha</label>
-               <input class="modal__input" type="password" id="input-perfil-senha2" placeholder="••••••••" autocomplete="new-password" />
+         <<div id="perfil-senha-bloco">
+            <button class="perfil-senha-toggle" id="btn-toggle-senha" type="button" aria-expanded="false" aria-controls="perfil-senha-campos">
+               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><rect x="1" y="4.5" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 4.5V3a2 2 0 014 0v1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+               Trocar senha
+               <svg class="perfil-senha-toggle__seta" width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="perfil-senha-campos" id="perfil-senha-campos" aria-hidden="true">
+               <div class="modal__field">
+                  <label class="modal__label" for="input-perfil-senha-atual">Senha atual</label>
+                  <input class="modal__input" type="password" id="input-perfil-senha-atual" placeholder="••••••••" autocomplete="current-password" tabindex="-1" />
+               </div>
+               <div class="modal__field">
+                  <label class="modal__label" for="input-perfil-senha">Nova senha</label>
+                  <input class="modal__input" type="password" id="input-perfil-senha" placeholder="••••••••" autocomplete="new-password" tabindex="-1" />
+               </div>
+               <div class="modal__field">
+                  <label class="modal__label" for="input-perfil-senha2">Confirmar nova senha</label>
+                  <input class="modal__input" type="password" id="input-perfil-senha2" placeholder="••••••••" autocomplete="new-password" tabindex="-1" />
+               </div>
             </div>
          </div>
 

@@ -99,6 +99,9 @@ var elsEstaticos = {
    inputAvatar:         null,
    inputPerfilNome:     null,
    inputPerfilEmail:    null,
+   inputPerfilSenhaAtual: null,
+   btnToggleSenha:        null,
+   perfilSenhaCampos:     null,
    inputPerfilSenha:    null,
    inputPerfilSenha2:   null,
    perfilAvatarPreview: null
@@ -181,6 +184,9 @@ function resolverEls() {
    elsEstaticos.inputAvatar          = el('input-avatar');
    elsEstaticos.inputPerfilNome      = el('input-perfil-nome');
    elsEstaticos.inputPerfilEmail     = el('input-perfil-email');
+   elsEstaticos.inputPerfilSenhaAtual = el('input-perfil-senha-atual');
+   elsEstaticos.btnToggleSenha        = el('btn-toggle-senha');
+   elsEstaticos.perfilSenhaCampos     = el('perfil-senha-campos');
    elsEstaticos.inputPerfilSenha     = el('input-perfil-senha');
    elsEstaticos.inputPerfilSenha2    = el('input-perfil-senha2');
    elsEstaticos.perfilAvatarPreview  = el('perfil-avatar-preview');
@@ -1811,8 +1817,20 @@ function abrirModalPerfil() {
 
    if (inp) inp.value = nome;
    if (iem) iem.value = email;
+   var is0 = elsEstaticos.inputPerfilSenhaAtual;
+   if (is0) is0.value = '';
    if (is1) is1.value = '';
    if (is2) is2.value = '';
+
+   // Fecha o accordion de senha
+   var toggle = elsEstaticos.btnToggleSenha;
+   var campos = elsEstaticos.perfilSenhaCampos;
+   if (toggle) toggle.setAttribute('aria-expanded', 'false');
+   if (campos) {
+      campos.classList.remove('perfil-senha-campos--aberto');
+      campos.setAttribute('aria-hidden', 'true');
+      campos.querySelectorAll('input').forEach(function(i) { i.setAttribute('tabindex', '-1'); });
+   }
 
    // Carrega avatar salvo (base64) ou usa inicial
    var avatarKey = 'vf-avatar' + (email ? '-' + email : '');
@@ -1843,10 +1861,20 @@ function salvarPerfil() {
    var is1 = elsEstaticos.inputPerfilSenha;
    var is2 = elsEstaticos.inputPerfilSenha2;
    var nome = inp ? inp.value.trim() : '';
+   var is0  = elsEstaticos.inputPerfilSenhaAtual;
+   var s0   = is0 ? is0.value : '';
    var s1   = is1 ? is1.value : '';
    var s2   = is2 ? is2.value : '';
+   var trocandoSenha = !!(s0 || s1 || s2);
 
-   if (s1 && s1 !== s2) {
+   if (trocandoSenha) {
+      if (!s0) { mostrarToast('Informe sua senha atual.', 'erro'); if (is0) is0.focus(); return; }
+      if (!s1) { mostrarToast('Informe a nova senha.', 'erro'); if (is1) is1.focus(); return; }
+      if (s1.length < 6) { mostrarToast('A nova senha precisa ter pelo menos 6 caracteres.', 'erro'); if (is1) is1.focus(); return; }
+      if (s1 !== s2) { mostrarToast('As senhas não coincidem.', 'erro'); if (is2) is2.focus(); return; }
+   }
+
+   if (false && s1 && s1 !== s2) { 
       mostrarToast('As senhas não coincidem.', 'erro');
       if (is2) is2.focus();
       return;
@@ -1871,7 +1899,26 @@ function salvarPerfil() {
 
    if (window.supabaseClient && window.authEstado && window.authEstado.usuario) {
       var payload = { data: { nome: nome } };
-      if (s1) payload.password = s1;
+      if (trocandoSenha) {
+         window.supabaseClient.auth.signInWithPassword({
+            email: window.authEstado.usuario.email,
+            password: s0
+         }).then(function(reauth) {
+            if (reauth.error) { mostrarToast('Senha atual incorreta.', 'erro'); return; }
+            payload.password = s1;
+            window.supabaseClient.auth.updateUser(payload).then(function(result) {
+               if (result.error) { mostrarToast('Erro: ' + result.error.message, 'erro'); return; }
+               if (window.authEstado.usuario) {
+                  window.authEstado.usuario.user_metadata = window.authEstado.usuario.user_metadata || {};
+                  window.authEstado.usuario.user_metadata.nome = nome;
+               }
+               atualizarInfoUsuario();
+               fecharModalPerfil();
+               mostrarToast('Perfil e senha atualizados.');
+            });
+         });
+         return;
+      }
       window.supabaseClient.auth.updateUser(payload).then(function(result) {
          if (result.error) { mostrarToast('Erro: ' + result.error.message, 'erro'); return; }
          if (window.authEstado.usuario) {
