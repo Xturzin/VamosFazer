@@ -648,7 +648,9 @@ function abrirModal() {
    if (mo) mo.classList.add('is-open');
    setTimeout(function() {
       var it = elsEstaticos.inputTitulo;
-      if (it) it.focus();
+      var nt = elsEstaticos.inputNotas;
+      if (it) { it.removeAttribute('readonly'); it.focus(); }
+      if (nt) nt.removeAttribute('readonly');
    }, 60);
 }
 
@@ -702,6 +704,10 @@ function fecharModal() {
    });
    fecharPicker();
    atualizarVencimentoModal(null);
+   var it = elsEstaticos.inputTitulo;
+   var nt = elsEstaticos.inputNotas;
+   if (it) it.setAttribute('readonly', '');
+   if (nt) nt.setAttribute('readonly', '');
    if (elementoAntesDoModal) { elementoAntesDoModal.focus(); elementoAntesDoModal = null; }
    if (estado.viewAtual === 'calendario') { renderizarCalendario(); }
 }
