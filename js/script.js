@@ -270,6 +270,10 @@ function carregarTarefasVisitante() {
    estado.tarefas = DEMO_TAREFAS.slice();
 }
 
+function carregarTarefasVisitante() {
+   estado.tarefas = DEMO_TAREFAS.slice();
+}
+
 function carregarTarefasLocal() {
    if (window._modoVisitante) {
       carregarTarefasVisitante();
@@ -283,6 +287,7 @@ function carregarTarefasLocal() {
 
 // salvarTarefas: salva local + sincroniza com Supabase em background
 function salvarTarefas() {
+   if (window._modoVisitante) return;
    if (_modoVisitante) return;
    salvarTarefasLocal();
    if (window.Sync && window.authEstado && window.authEstado.usuario) {
