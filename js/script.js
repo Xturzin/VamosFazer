@@ -5,13 +5,26 @@
 // =============================================
 var _modoVisitante = false;
 
+var _d = function(offset) { return new Date(new Date().setDate(new Date().getDate()+offset)).toISOString().slice(0,10); };
+var _hoje = new Date().toISOString().slice(0,10);
+
 var DEMO_TAREFAS = [
-   { id:'vf-d1', titulo:'Estudar estrutura de dados', notas:'Foco em árvores e grafos', prioridade:'alta',  concluida:false, criadaEm: new Date().toISOString().slice(0,10), vencimento: new Date().toISOString().slice(0,10), ordem:0 },
-   { id:'vf-d2', titulo:'Fazer exercícios de algoritmos', notas:'LeetCode — nível médio', prioridade:'alta',  concluida:false, criadaEm: new Date().toISOString().slice(0,10), vencimento: new Date(new Date().setDate(new Date().getDate()+1)).toISOString().slice(0,10), ordem:1 },
-   { id:'vf-d3', titulo:'Revisar anotações de CC', notas:'', prioridade:'media', concluida:false, criadaEm: new Date().toISOString().slice(0,10), vencimento: null, ordem:2 },
-   { id:'vf-d4', titulo:'Entregar trabalho de ADS', notas:'Apresentação em slides', prioridade:'alta',  concluida:false, criadaEm: new Date().toISOString().slice(0,10), vencimento: new Date(new Date().setDate(new Date().getDate()+3)).toISOString().slice(0,10), ordem:3 },
-   { id:'vf-d5', titulo:'Ler documentação do Supabase', notas:'Auth e Realtime', prioridade:'media', concluida:true,  criadaEm: new Date().toISOString().slice(0,10), vencimento: null, ordem:4 },
-   { id:'vf-d6', titulo:'Atualizar portfólio', notas:'Adicionar projeto Vamos Fazer?', prioridade:'baixa', concluida:true,  criadaEm: new Date().toISOString().slice(0,10), vencimento: null, ordem:5 },
+   { id:'vf-d1',  titulo:'Estudar estrutura de dados',          notas:'Foco em árvores binárias e grafos',           prioridade:'alta',  concluida:false, criadaEm:_hoje, vencimento:_hoje,     ordem:0  },
+   { id:'vf-d2',  titulo:'Fazer exercícios de algoritmos',      notas:'LeetCode — problemas de nível médio',         prioridade:'alta',  concluida:false, criadaEm:_hoje, vencimento:_d(1),     ordem:1  },
+   { id:'vf-d3',  titulo:'Revisar anotações de CC',             notas:'Capítulo 3 — complexidade e recursão',        prioridade:'media', concluida:false, criadaEm:_hoje, vencimento:_d(2),     ordem:2  },
+   { id:'vf-d4',  titulo:'Entregar trabalho de ADS',            notas:'Apresentação em slides — 10 minutos',         prioridade:'alta',  concluida:false, criadaEm:_hoje, vencimento:_d(3),     ordem:3  },
+   { id:'vf-d5',  titulo:'Estudar banco de dados relacional',   notas:'Joins, índices e normalização',               prioridade:'alta',  concluida:false, criadaEm:_hoje, vencimento:_d(4),     ordem:4  },
+   { id:'vf-d6',  titulo:'Preparar resumo para prova de CC',    notas:'Lógica proposicional e álgebra booleana',     prioridade:'alta',  concluida:false, criadaEm:_hoje, vencimento:_d(5),     ordem:5  },
+   { id:'vf-d7',  titulo:'Ler artigo sobre clean code',         notas:'Capítulos 1 ao 4',                            prioridade:'media', concluida:false, criadaEm:_hoje, vencimento:_d(6),     ordem:6  },
+   { id:'vf-d8',  titulo:'Organizar ambiente de estudos',       notas:'Separar materiais por disciplina',            prioridade:'baixa', concluida:false, criadaEm:_hoje, vencimento:null,      ordem:7  },
+   { id:'vf-d9',  titulo:'Ir à academia',                       notas:'Treino de segunda e quarta',                  prioridade:'baixa', concluida:false, criadaEm:_hoje, vencimento:_hoje,     ordem:8  },
+   { id:'vf-d10', titulo:'Comprar material escolar',            notas:'Caderno, canetas e marca texto',              prioridade:'baixa', concluida:false, criadaEm:_hoje, vencimento:_d(7),     ordem:9  },
+   { id:'vf-d11', titulo:'Assistir aula gravada de ADS',        notas:'Módulo 4 — modelagem de sistemas',            prioridade:'media', concluida:false, criadaEm:_hoje, vencimento:_d(2),     ordem:10 },
+   { id:'vf-d12', titulo:'Praticar SQL no banco de dados',      notas:'Criar e popular tabelas de exemplo',          prioridade:'media', concluida:false, criadaEm:_hoje, vencimento:null,      ordem:11 },
+   { id:'vf-d13', titulo:'Ler documentação do Supabase',        notas:'Auth, Realtime e Storage',                    prioridade:'media', concluida:true,  criadaEm:_hoje, vencimento:null,      ordem:12 },
+   { id:'vf-d14', titulo:'Atualizar portfólio',                 notas:'Adicionar projeto Vamos Fazer?',              prioridade:'baixa', concluida:true,  criadaEm:_hoje, vencimento:null,      ordem:13 },
+   { id:'vf-d15', titulo:'Revisar lógica de programação',       notas:'Exercícios de condicionais e laços',          prioridade:'media', concluida:true,  criadaEm:_hoje, vencimento:null,      ordem:14 },
+   { id:'vf-d16', titulo:'Marcar consulta médica',              notas:'',                                            prioridade:'baixa', concluida:true,  criadaEm:_hoje, vencimento:null,      ordem:15 },
 ];
 
 var estado = {
