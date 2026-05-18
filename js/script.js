@@ -3,6 +3,17 @@
 // =============================================
 // ESTADO CENTRAL
 // =============================================
+var _modoVisitante = false;
+
+var DEMO_TAREFAS = [
+   { id:'vf-d1', titulo:'Estudar estrutura de dados', notas:'Foco em árvores e grafos', prioridade:'alta',  concluida:false, criadaEm: new Date().toISOString().slice(0,10), vencimento: new Date().toISOString().slice(0,10), ordem:0 },
+   { id:'vf-d2', titulo:'Fazer exercícios de algoritmos', notas:'LeetCode — nível médio', prioridade:'alta',  concluida:false, criadaEm: new Date().toISOString().slice(0,10), vencimento: new Date(new Date().setDate(new Date().getDate()+1)).toISOString().slice(0,10), ordem:1 },
+   { id:'vf-d3', titulo:'Revisar anotações de CC', notas:'', prioridade:'media', concluida:false, criadaEm: new Date().toISOString().slice(0,10), vencimento: null, ordem:2 },
+   { id:'vf-d4', titulo:'Entregar trabalho de ADS', notas:'Apresentação em slides', prioridade:'alta',  concluida:false, criadaEm: new Date().toISOString().slice(0,10), vencimento: new Date(new Date().setDate(new Date().getDate()+3)).toISOString().slice(0,10), ordem:3 },
+   { id:'vf-d5', titulo:'Ler documentação do Supabase', notas:'Auth e Realtime', prioridade:'media', concluida:true,  criadaEm: new Date().toISOString().slice(0,10), vencimento: null, ordem:4 },
+   { id:'vf-d6', titulo:'Atualizar portfólio', notas:'Adicionar projeto Vamos Fazer?', prioridade:'baixa', concluida:true,  criadaEm: new Date().toISOString().slice(0,10), vencimento: null, ordem:5 },
+];
+
 var estado = {
    tarefas:               [],
    filtroAtivo:           'todas',
@@ -242,7 +253,15 @@ function salvarTarefasLocal() {
    catch(e) { mostrarToast('Armazenamento cheio.', 'erro'); }
 }
 
+function carregarTarefasVisitante() {
+   estado.tarefas = DEMO_TAREFAS.slice();
+}
+
 function carregarTarefasLocal() {
+   if (window._modoVisitante) {
+      carregarTarefasVisitante();
+      return;
+   }
    try {
       var d = localStorage.getItem('vamos-fazer-tarefas');
       if (d) estado.tarefas = JSON.parse(d);
@@ -251,6 +270,7 @@ function carregarTarefasLocal() {
 
 // salvarTarefas: salva local + sincroniza com Supabase em background
 function salvarTarefas() {
+   if (_modoVisitante) return;
    salvarTarefasLocal();
    if (window.Sync && window.authEstado && window.authEstado.usuario) {
       window.Sync.sincronizarLote(estado.tarefas);

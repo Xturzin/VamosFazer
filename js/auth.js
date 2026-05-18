@@ -183,7 +183,13 @@
                '</div>' +
 
             '</div>' +
-            '<p class="auth-footer">Suas tarefas, seu ritmo.</p>' +
+            '<p class=\"auth-footer\">Suas tarefas, seu ritmo.</p>' +
+            '<button type=\"button\" id=\"btn-visitante\" style=\"' +
+               'display:block;width:100%;max-width:360px;margin:0 auto 16px;' +
+               'background:none;border:1px solid rgba(115,57,212,0.3);border-radius:10px;' +
+               'padding:10px;font-size:.82rem;font-weight:600;color:#a78bfa;cursor:pointer;' +
+               'font-family:inherit;transition:border-color .2s,color .2s;' +
+            '\">👀 Entrar como visitante</button>' +
          '</div>';
    }
 
@@ -361,6 +367,15 @@
       }
 
       // Reenviar e-mail
+      var btnVisitante = document.getElementById('btn-visitante');
+      if (btnVisitante) {
+         btnVisitante.addEventListener('click', function() {
+            window._modoVisitante = true;
+            esconderTelaAuth();
+            if (window._callbackApp) window._callbackApp();
+         });
+      }
+
       if (btnReenviar) {
          btnReenviar.addEventListener('click', function() {
             var email = ((document.getElementById('cadastro-email') || {}).value) ||
@@ -381,8 +396,9 @@
 
       // Inicializa: checa sessão e direciona
       init: function(callbackApp) {
+         window._callbackApp = callbackApp;
+
          if (!window.supabaseClient) {
-            // Sem Supabase: modo local
             if (callbackApp) callbackApp();
             return;
          }
