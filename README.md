@@ -24,11 +24,10 @@
 <!-- BADGES -->
 <div align="center">
 
-![PWA](https://img.shields.io/badge/PWA-Sim-7339D4?style=for-the-badge)
-![Vanilla JS](https://img.shields.io/badge/Vanilla_JS-Sem_Build-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![Supabase](https://img.shields.io/badge/Supabase-Auth_+_DB_+_Realtime-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
-![Vercel](https://img.shields.io/badge/Deploy-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
-![pt-BR](https://img.shields.io/badge/Idioma-pt--BR-A78BFA?style=for-the-badge)
+![PWA](https://img.shields.io/badge/PWA-7339D4?style=for-the-badge&logo=pwa&logoColor=white)
+![Vanilla JS](https://img.shields.io/badge/Vanilla_JS-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
 </div>
 
@@ -37,9 +36,7 @@
 <!-- CTA -->
 <div align="center">
 
-[![Acessar Demo](https://img.shields.io/badge/%F0%9F%8C%90_Acessar_Demo-7339D4?style=for-the-badge&logoColor=white)](https://vamos-fazer.vercel.app/)
-&nbsp;
-[![Modo Visitante](https://img.shields.io/badge/%F0%9F%91%80_Modo_Visitante-A78BFA?style=for-the-badge&logoColor=white)](https://vamos-fazer.vercel.app/)
+[![Acessar Site](https://img.shields.io/badge/Acessar_Site_%E2%86%92-7339D4?style=for-the-badge&logoColor=white)](https://vamos-fazer.vercel.app/)
 
 </div>
 
@@ -64,13 +61,13 @@
 
 **Vamos Fazer?** é um gerenciador de tarefas pessoal com interface editorial e minimalista. Funciona como aplicação web instalável (PWA), opera offline e sincroniza entre dispositivos quando o usuário está autenticado.
 
-O projeto nasceu como exercício acadêmico — a faculdade exigia JavaScript puro, sem frameworks — e cresceu até virar uma ferramenta que o autor usa no dia a dia. Hoje está finalizado e serve também como peça de portfólio.
+O projeto nasceu como exercício acadêmico, já que a faculdade exigia JavaScript puro sem frameworks. Com o tempo, cresceu até virar uma ferramenta que o autor usa no dia a dia. Hoje está finalizado e serve também como peça de portfólio.
 
 A aplicação suporta três modos de uso:
 
-- **Autenticado** — login com e-mail e senha via Supabase; tarefas sincronizadas entre dispositivos em tempo real.
-- **Local** — funciona apenas com `localStorage`, sem necessidade de conta.
-- **Visitante** — entra direto na tela inicial com 16 tarefas de demonstração, sem cadastro.
+- **Autenticado**: login com e-mail e senha via Supabase, com tarefas sincronizadas entre dispositivos em tempo real.
+- **Local**: funciona apenas com `localStorage`, sem necessidade de conta.
+- **Visitante**: entra direto na tela inicial com 16 tarefas de demonstração, sem cadastro.
 
 ---
 
@@ -123,7 +120,7 @@ A aplicação suporta três modos de uso:
 <br />
 
 - Criar tarefa com título (até 120 caracteres, com contador visual), prioridade (Alta/Média/Baixa), prazo opcional e notas opcionais (até 1.000 caracteres)
-- Editar qualquer tarefa existente (mesmo modal — título e botão se adaptam ao contexto)
+- Editar qualquer tarefa existente no mesmo modal, com título e botão se adaptando ao contexto
 - Marcar e desmarcar conclusão com animação
 - Deletar com confirmação em dois cliques, e botão **Desfazer** por 5 segundos via toast
 - Reordenação por drag & drop no desktop (ordenação "Recente" sem busca ativa)
@@ -134,12 +131,12 @@ A aplicação suporta três modos de uso:
 <summary><b>🗂 Visualizações e filtros</b></summary>
 <br />
 
-- **Todas as Tarefas** — view padrão
-- **Hoje** — tarefas criadas hoje
-- **Em Progresso** — não concluídas
+- **Todas as Tarefas**: view padrão
+- **Hoje**: tarefas criadas hoje
+- **Em Progresso**: não concluídas
 - **Concluídas**
-- **Vencidas** — não concluídas com prazo já vencido
-- **Calendário** — visualização mensal
+- **Vencidas**: não concluídas com prazo já vencido
+- **Calendário**: visualização mensal
 
 Cada filtro tem badge com contagem em tempo real na sidebar. Ordenação por Recente, Prioridade, Prazo ou A–Z. Busca em tempo real com debounce de 180ms e destaque visual do termo encontrado.
 
@@ -194,7 +191,7 @@ Cada filtro tem badge com contagem em tempo real na sidebar. Ordenação por Rec
 - Reenviar e-mail de confirmação
 - Mensagens de erro traduzidas para português
 - Toggle de visibilidade da senha
-- Perfil editável — nome, avatar (foto upload em base64) e troca de senha com reautenticação
+- Perfil editável (nome, avatar como foto em base64, e troca de senha com reautenticação)
 - **Sincronização em tempo real** entre dispositivos via Supabase Realtime
 
 </details>
@@ -248,11 +245,11 @@ Cada filtro tem badge com contagem em tempo real na sidebar. Ordenação por Rec
 
 | Categoria | Ferramentas |
 |---|---|
-| **Frontend** | HTML5, CSS3 (custom properties + BEM), JavaScript ES5 — sem build, sem framework, sem bundler |
+| **Frontend** | HTML5, CSS3 (custom properties + BEM), JavaScript ES5 (sem build, sem framework, sem bundler) |
 | **Tipografia** | [Lora](https://fonts.google.com/specimen/Lora) (display, serifa) · [Inter](https://fonts.google.com/specimen/Inter) (corpo) |
-| **Backend / BaaS** | [Supabase](https://supabase.com) — Auth + Postgres + Realtime |
+| **Backend / BaaS** | [Supabase](https://supabase.com): Auth + Postgres + Realtime |
 | **APIs Web nativas** | Service Worker, Web App Manifest, Notification API, Drag & Drop, File API, Vibration API, LocalStorage |
-| **Deploy** | [Vercel](https://vercel.com) — produção e preview |
+| **Deploy** | [Vercel](https://vercel.com): produção e preview |
 
 ---
 
@@ -302,11 +299,11 @@ A escolha de tema (claro/escuro) é aplicada **antes** do CSS carregar, via snip
 │   │   └── vamos-fazer-demo.gif    Demonstração animada usada no README
 │   └── screenshots/                Imagens estáticas usadas no README
 ├── css/
-│   └── style.css                   Estilo único — ~780 linhas, BEM + custom properties
+│   └── style.css                   Estilo único, ~780 linhas, BEM + custom properties
 ├── js/
-│   ├── auth.js                     window.Auth — autenticação e tela de login
+│   ├── auth.js                     window.Auth, autenticação e tela de login
 │   ├── script.js                   Estado, renderização e eventos (~2.200 linhas)
-│   └── sync.js                     window.Sync — CRUD Supabase, fila offline, realtime
+│   └── sync.js                     window.Sync, CRUD Supabase, fila offline, realtime
 ├── icon.svg                        Ícone do PWA
 ├── index.html                      UI declarativa + configuração do cliente Supabase
 ├── manifest.json                   Manifest do PWA (pt-BR, standalone)
@@ -320,7 +317,7 @@ A escolha de tema (claro/escuro) é aplicada **antes** do CSS carregar, via snip
 
 ### Construir sem framework
 
-A faculdade pediu JavaScript puro. Sem framework, toda a renderização é imperativa — troca de view feita injetando `innerHTML` no `#main-content`, sem virtual DOM. A sincronização entre estado e UI é manual em cada operação, exigindo disciplina pra não esquecer de atualizar badges, contadores e barra de progresso a cada mudança. Cada função de mutação termina chamando um `sincronizarEstado()` central.
+A faculdade pediu JavaScript puro. Sem framework, toda a renderização é imperativa, com troca de view feita injetando `innerHTML` no `#main-content`, sem virtual DOM. A sincronização entre estado e UI é manual em cada operação, exigindo disciplina pra não esquecer de atualizar badges, contadores e barra de progresso a cada mudança. Cada função de mutação termina chamando um `sincronizarEstado()` central.
 
 ### Offline-first com fila de sincronização
 
@@ -328,23 +325,15 @@ A escolha foi salvar **sempre** localmente primeiro e tratar o Supabase como cam
 
 ### Sincronização em tempo real entre dispositivos
 
-Cada usuário autenticado abre um canal Realtime no Supabase filtrado por `user_id`. Qualquer mudança em outro dispositivo dispara um recarregamento completo da lista. A lógica é simples por design — recarregar tudo é mais robusto que tentar fazer merge incremental e lidar com conflitos de ordem.
+Cada usuário autenticado abre um canal Realtime no Supabase filtrado por `user_id`. Qualquer mudança em outro dispositivo dispara um recarregamento completo da lista. A lógica é simples por design: recarregar tudo é mais robusto que tentar fazer merge incremental e lidar com conflitos de ordem.
 
 ### Datepicker customizado
 
 O input nativo `<input type="date">` tem visual inconsistente entre navegadores e destoa da estética editorial do app. A solução foi construir um picker próprio: popup com navegação por mês, presets rápidos (**Hoje** / **Amanhã** / **Semana**) e botão para limpar prazo. Mais código, mas comportamento idêntico em todos os navegadores e visual coerente com o resto da UI.
 
-### Bloquear o autofill agressivo do Chrome
-
-Vários commits do projeto foram dedicados a impedir o Chrome de pré-preencher campos do modal de tarefa com nomes, e-mails ou senhas salvas. A solução final combina:
-
-- `autocomplete="off"` e `autocomplete="nope"` nos inputs
-- Atributos `readonly` removidos apenas no foco
-- Dois inputs invisíveis no topo do `<body>` como isca para o autofill
-
 ### Acessibilidade
 
-Atributos ARIA em todos os componentes interativos. Os quatro modais (tarefa, importação, atalhos, perfil) implementam focus trap próprio. Uma região com `aria-live="polite"` anuncia criações, conclusões e exclusões. A navegação por teclado cobre todas as operações — criar, editar, deletar, navegar, selecionar em lote, alternar tema, buscar, abrir atalhos.
+Atributos ARIA em todos os componentes interativos. Os quatro modais (tarefa, importação, atalhos, perfil) implementam focus trap próprio. Uma região com `aria-live="polite"` anuncia criações, conclusões e exclusões. A navegação por teclado cobre todas as operações: criar, editar, deletar, navegar, selecionar em lote, alternar tema, buscar, abrir atalhos.
 
 ---
 
@@ -361,8 +350,9 @@ Atributos ARIA em todos os componentes interativos. Os quatro modais (tarefa, im
   <br />
   <br />
   
-  [![GitHub](https://img.shields.io/badge/GitHub-@Xturzin-181717?style=for-the-badge&logo=github)](https://github.com/Xturzin)
-  [![LinkedIn](https://img.shields.io/badge/LinkedIn-arthurcoutooliveira-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/arthurcoutooliveira)
+  [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Xturzin)
+  [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/arthurcoutooliveira)
+  [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/xtruzin/)
 
 </div>
 
